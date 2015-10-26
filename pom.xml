@@ -6,8 +6,6 @@
 	<groupId>com.yamap55</groupId>
 	<artifactId>guild-story2-memo</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-
-	<!-- (1) -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
