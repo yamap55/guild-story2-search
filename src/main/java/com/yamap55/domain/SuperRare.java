@@ -1,4 +1,4 @@
-package com.yamap55.guild_story2_memo.domain;
+package com.yamap55.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
