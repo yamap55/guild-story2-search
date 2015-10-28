@@ -2,31 +2,11 @@ package com.yamap55;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.ComponentScan;
 
-/**
- * Hello world!
- *
- */
-@RestController
 @EnableAutoConfiguration
+@ComponentScan
 public class App {
-
-	@RequestMapping("/")
-	String home() {
-		return "Hello World!!!";
-	}
-
-	@RequestMapping("hoge")
-	String hoge() {
-		return "hoge";
-	}
-
-	@RequestMapping("huga")
-	String huga() {
-		return "huga";
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);

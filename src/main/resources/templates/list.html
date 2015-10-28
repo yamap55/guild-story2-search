@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>超レア一覧</title>
+</head>
+<body>
+	<div>
+		<table class="table table-striped table-bordered table-condensed">
+			<tr>
+				<th>ID</th>
+				<th>名称</th>
+				<th>効果</th>
+				<th colspan="2">編集</th>
+			</tr>
+			<tr th:each="superRare : ${superRares}">
+				<td th:text="${superRare.id}">100</td>
+				<td th:text="${superRare.name}">なまえ</td>
+				<td th:text="${superRare.ability}">効果とか</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

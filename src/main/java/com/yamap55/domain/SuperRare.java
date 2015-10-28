@@ -23,4 +23,7 @@ public class SuperRare {
 
 	@Column(nullable = false)
 	private String name;
+
+	@Column
+	private String ability;
 }
