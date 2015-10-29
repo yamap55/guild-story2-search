@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<meta charset="UTF-8" />
 <title>超レア一覧</title>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"
+	th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap-theme.min.css}" />
 </head>
 <body>
 	<div>
@@ -10,7 +17,6 @@
 				<th>ID</th>
 				<th>名称</th>
 				<th>効果</th>
-				<th colspan="2">編集</th>
 			</tr>
 			<tr th:each="superRare : ${superRares}">
 				<td th:text="${superRare.id}">100</td>
@@ -19,5 +25,11 @@
 			</tr>
 		</table>
 	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
+		th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+	<script
+		src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>
