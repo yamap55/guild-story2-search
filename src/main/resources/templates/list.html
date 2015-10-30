@@ -9,6 +9,7 @@
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"
 	th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap-theme.min.css}" />
+<link href="../../../../static/css/common.css" th:href="@{/css/common.css}" rel="stylesheet"/>
 </head>
 <body>
 	<div>
@@ -25,11 +26,30 @@
 			</tr>
 		</table>
 	</div>
+	<hr/>
+	<div>
+		<input type="text" id="id" autocomplete="off" size="10" style="display: block"/>
+		<div id="suggest" style="display:none;"></div>
+	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
 		th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
 	<script
 		src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"
 		th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" src="../../../../static/js/suggest.js" th:src="@{/js/suggest.js}"></script>
+	<script type="text/javascript">
+function startSuggest() {
+  new Suggest.Local(
+        "id",    // 入力のエレメントID
+        "suggest", // 補完候補を表示するエリアのID
+        ["java","C#"],      // 補完候補の検索対象となる配列
+        {dispMax: 10, interval: 1000}); // オプション
+}
+
+window.addEventListener ?
+  window.addEventListener('load', startSuggest, false) :
+  window.attachEvent('onload', startSuggest);
+	</script>
 </body>
 </html>
