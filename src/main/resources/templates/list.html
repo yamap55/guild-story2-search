@@ -13,6 +13,11 @@
 </head>
 <body>
 	<div>
+		<input type="text" id="id" autocomplete="off" size="10"
+			style="display: block" />
+		<div id="suggest" style="display: none;"></div>
+	</div>
+	<div>
 		<table class="table table-striped table-bordered table-condensed">
 			<tr>
 				<th>ID</th>
@@ -26,30 +31,32 @@
 			</tr>
 		</table>
 	</div>
-	<hr/>
-	<div>
-		<input type="text" id="id" autocomplete="off" size="10" style="display: block"/>
-		<div id="suggest" style="display:none;"></div>
-	</div>
+	<hr />
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
 		th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
 	<script
 		src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"
 		th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
-	<script type="text/javascript" src="../../../../static/js/suggest.js" th:src="@{/js/suggest.js}"></script>
+	<script type="text/javascript" src="../../../../static/js/suggest.js"
+		th:src="@{/js/suggest.js}"></script>
 	<script type="text/javascript">
-function startSuggest() {
-  new Suggest.Local(
-        "id",    // 入力のエレメントID
-        "suggest", // 補完候補を表示するエリアのID
-        ["java","C#"],      // 補完候補の検索対象となる配列
-        {dispMax: 10, interval: 1000}); // オプション
-}
-
-window.addEventListener ?
-  window.addEventListener('load', startSuggest, false) :
-  window.attachEvent('onload', startSuggest);
+		function startSuggest() {
+			$.getJSON("api/super_rare", null, function(data, status) {
+				var d = data.map(function(v) {
+					return v.name
+				});
+				new Suggest.Local("id",
+				"suggest",
+				d, {
+					dispMax : 10,
+					interval : 1000,
+					prefix : true, // 前方一致
+				});
+			});
+		}
+		window.addEventListener ? window.addEventListener('load', startSuggest,
+				false) : window.attachEvent('onload', startSuggest);
 	</script>
 </body>
 </html>
