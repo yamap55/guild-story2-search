@@ -69,6 +69,8 @@ Suggest.Local.prototype = {
   classMouseOver: 'over',
   classSelect: 'select',
   hookBeforeSearch: function(){},
+  serchKeyFunction: function(obj){return obj},
+  suggestFunction: function(obj){return obj},
 
   setOptions: function(options) {
     Suggest.copyProperties(this, options);
@@ -125,7 +127,7 @@ Suggest.Local.prototype = {
     this.suggestIndexList = [];
 
     for (var i = 0, length = this.candidateList.length; i < length; i++) {
-      if ((temp = this.isMatch(this.candidateList[i], text)) != null) {
+      if ((temp = this.isMatch(this.serchKeyFunction(this.candidateList[i]), text)) != null) {
         resultList.push(temp);
         this.suggestIndexList.push(i);
 
@@ -301,7 +303,7 @@ Suggest.Local.prototype = {
 
     this.setStyleActive(this.suggestList[index]);
 
-    this.setInputText(this.candidateList[this.suggestIndexList[index]]);
+    this.setInputText(this.suggestFunction(this.candidateList[this.suggestIndexList[index]]));
 
     this.oldText = this.getInputText();
     this.input.focus();

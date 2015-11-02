@@ -79,6 +79,8 @@
 					dispMax : 10,
 					interval : 1000,
 					prefix : true, // 前方一致
+					serchKeyFunction: function(obj){return obj.pronunciation},
+					suggestFunction: function(obj){return obj.name},
 				});
 			});
 		}

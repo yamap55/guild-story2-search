@@ -26,4 +26,7 @@ public class SuperRare {
 
 	@Column
 	private String ability;
+	
+	@Column
+	private String pronunciation;
 }
