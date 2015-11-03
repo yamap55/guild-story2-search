@@ -72,10 +72,8 @@
 	<script type="text/javascript">
 		function startSuggest() {
 			$.getJSON("api/super_rare", null, function(data, status) {
-				var d = data.map(function(v) {
-					return v.name
-				});
-				new Suggest.Local("super_rare", "suggest", d, {
+				console.log(data);
+				new Suggest.Local("super_rare", "suggest", data, {
 					dispMax : 10,
 					interval : 1000,
 					prefix : true, // 前方一致
