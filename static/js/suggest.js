@@ -123,11 +123,11 @@ Suggest.Local.prototype = {
   _search: function(text) {
 
     var resultList = [];
-    var temp; 
+    var temp;
     this.suggestIndexList = [];
 
     for (var i = 0, length = this.candidateList.length; i < length; i++) {
-      if ((temp = this.isMatch(this.serchKeyFunction(this.candidateList[i]), text)) != null) {
+      if ((temp = this.isMatch(this.candidateList[i], text)) != null) {
         resultList.push(temp);
         this.suggestIndexList.push(i);
 
@@ -139,20 +139,21 @@ Suggest.Local.prototype = {
 
   isMatch: function(value, pattern) {
 
-    if (value == null) return null;
+	var _value = this.serchKeyFunction(value)
+    if (_value == null) return null;
 
     var pos = (this.ignoreCase) ?
-      value.toLowerCase().indexOf(pattern.toLowerCase())
-      : value.indexOf(pattern);
+      _value.toLowerCase().indexOf(pattern.toLowerCase())
+      : _value.indexOf(pattern);
 
     if ((pos == -1) || (this.prefix && pos != 0)) return null;
 
     if (this.highlight) {
-      return (this._escapeHTML(value.substr(0, pos)) + '<strong>' 
-             + this._escapeHTML(value.substr(pos, pattern.length)) 
-               + '</strong>' + this._escapeHTML(value.substr(pos + pattern.length)));
+      return (this._escapeHTML(_value.substr(0, pos)) + '<strong>'
+             + this._escapeHTML(_value.substr(pos, pattern.length))
+               + '</strong>' + this._escapeHTML(_value.substr(pos + pattern.length)));
     } else {
-      return this._escapeHTML(value);
+      return this._escapeHTML(this.suggestFunction(value));
     }
   },
 
@@ -200,7 +201,7 @@ Suggest.Local.prototype = {
       this.timerId = setTimeout(this._bind(this.checkLoop), this.interval);
     }
 
-    if (this.dispAllKey && event.ctrlKey 
+    if (this.dispAllKey && event.ctrlKey
         && this.getInputText() == ''
         && !this.suggestList
         && event.keyCode == Suggest.Key.DOWN) {
@@ -311,7 +312,7 @@ Suggest.Local.prototype = {
 
   changeUnactive: function() {
 
-    if (this.suggestList != null 
+    if (this.suggestList != null
         && this.suggestList.length > 0
         && this.activePosition != null) {
       this.setStyleUnactive(this.suggestList[this.activePosition]);
