@@ -139,21 +139,27 @@ Suggest.Local.prototype = {
 
   isMatch: function(value, pattern) {
 
-	var _value = this.serchKeyFunction(value)
-    if (_value == null) return null;
+    var serchValue = this.serchKeyFunction(value)
+    var suggestValue = this.suggestFunction(value)
+    if (serchValue == null) return null;
 
-    var pos = (this.ignoreCase) ?
-      _value.toLowerCase().indexOf(pattern.toLowerCase())
-      : _value.indexOf(pattern);
+    var f = (this.ignoreCase) ?
+      function(v) {return v.toLowerCase().indexOf(pattern.toLowerCase());}
+      : function(v) {return v.indexOf(pattern);};
 
-    if ((pos == -1) || (this.prefix && pos != 0)) return null;
+    var pos = f(serchValue);
+    var suggestPos = f(suggestValue);
 
-    if (this.highlight) {
-      return (this._escapeHTML(_value.substr(0, pos)) + '<strong>'
-             + this._escapeHTML(_value.substr(pos, pattern.length))
-               + '</strong>' + this._escapeHTML(_value.substr(pos + pattern.length)));
+    if ((pos == -1 && suggestPos == -1) || (this.prefix && pos != 0 && suggestPos != 0)) {
+      return null;
+    }
+
+    if (this.highlight && pos != -1) {
+      return (this._escapeHTML(serchValue.substr(0, pos)) + '<strong>'
+             + this._escapeHTML(serchValue.substr(pos, pattern.length))
+               + '</strong>' + this._escapeHTML(serchValue.substr(pos + pattern.length)));
     } else {
-      return this._escapeHTML(this.suggestFunction(value));
+      return this._escapeHTML(suggestValue);
     }
   },
 
