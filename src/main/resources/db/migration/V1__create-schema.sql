@@ -1,1 +1,2 @@
 CREATE TABLE m_super_rare(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(30), ability VARCHAR(500), pronunciation VARCHAR(30));
+CREATE TABLE m_item(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(30), pronunciation VARCHAR(30));

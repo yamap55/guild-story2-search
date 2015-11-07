@@ -12,7 +12,7 @@ import com.yamap55.service.SuperRareService;
 
 @RestController
 @RequestMapping("api/super_rare")
-public class HogeRestController {
+public class SuperRaraRestController {
 
 	@Autowired
 	SuperRareService superRareService;

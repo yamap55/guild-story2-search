@@ -24,9 +24,9 @@
 			<tr>
 				<td>1</td>
 				<td>
-					<input type="text" id="super_rare" autocomplete="off" size="10"
-					style="display: block" />
-					<div id="suggest" style="display: none;"></div>
+					<input type="text" id="super_rare_name" autocomplete="off" size="10"
+					class="suggest"/>
+					<div id="super_rare_suggest" class="suggest_area"></div>
 				</td>
 				<td>
 					<select id="shogo">
@@ -41,7 +41,11 @@
 						<option value="6">壊れた</option>
 					</select>
 				</td>
-				<td><input type="text" id="name"/></td>
+				<td>
+					<input type="text" id="item_name" autocomplete="off" size="10"
+					class="suggest" />
+					<div id="item_suggest" class="suggest_area"></div>
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -72,8 +76,16 @@
 	<script type="text/javascript">
 		function startSuggest() {
 			$.getJSON("api/super_rare", null, function(data, status) {
-				console.log(data);
-				new Suggest.Local("super_rare", "suggest", data, {
+				new Suggest.Local("super_rare_name", "super_rare_suggest", data, {
+					dispMax : 10,
+					interval : 1000,
+					prefix : true, // 前方一致
+					serchKeyFunction: function(obj){return obj.pronunciation},
+					suggestFunction: function(obj){return obj.name},
+				});
+			});
+			$.getJSON("api/item", null, function(data, status) {
+				new Suggest.Local("item_name", "item_suggest", data, {
 					dispMax : 10,
 					interval : 1000,
 					prefix : true, // 前方一致

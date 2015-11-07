@@ -13,7 +13,7 @@ import com.yamap55.service.SuperRareService;
 
 @Controller
 @RequestMapping("")
-public class HogeController {
+public class SuperRareController {
 
 	@Autowired
 	SuperRareService superRareService;
