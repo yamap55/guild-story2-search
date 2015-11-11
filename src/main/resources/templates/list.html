@@ -57,6 +57,22 @@
 			</tr>
 		</table>
 	</div>
+	<hr />
+	<div>
+		<table class="table table-striped table-bordered table-condensed">
+			<tr>
+				<th>ID</th>
+				<th>名称</th>
+				<th>効果</th>
+			</tr>
+			<tr th:each="superRare : ${superRares}">
+				<td th:text="${superRare.id}">100</td>
+				<td th:text="${superRare.name}">なまえ</td>
+				<td th:text="${superRare.ability}">効果とか</td>
+			</tr>
+		</table>
+	</div>
+	<hr />
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
 		th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
