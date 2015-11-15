@@ -37,3 +37,4 @@ overridedb.*
 .metadata
 .recommenders
 .RemoteSystemsTempFiles
+*.log
