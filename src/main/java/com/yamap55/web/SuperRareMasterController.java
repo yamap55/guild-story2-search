@@ -12,7 +12,7 @@ import com.yamap55.domain.SuperRareMaster;
 import com.yamap55.service.SuperRareMasterService;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("aa")
 public class SuperRareMasterController {
 
 	@Autowired

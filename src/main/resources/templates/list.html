@@ -63,6 +63,21 @@
 			<tr>
 				<th>ID</th>
 				<th>名称</th>
+				<th>memo</th>
+			</tr>
+			<tr th:each="possessedItem : ${possessedItems}">
+				<td th:text="${possessedItem.id}">100</td>
+				<td th:text="${possessedItem.allName}">なまえ</td>
+				<td th:text="${possessedItem.memo}">メモ</td>
+			</tr>
+		</table>
+	</div>
+	<hr />
+	<div>
+		<table class="table table-striped table-bordered table-condensed">
+			<tr>
+				<th>ID</th>
+				<th>名称</th>
 				<th>効果</th>
 			</tr>
 			<tr th:each="superRare : ${superRares}">
