@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yamap55.domain.Item;
-import com.yamap55.repository.ItemRepository;
+import com.yamap55.domain.ItemMaster;
+import com.yamap55.repository.ItemMasterRepository;
 
 @Service
 @Transactional
-public class ItemService {
+public class ItemMasterService {
 
 	@Autowired
-	ItemRepository ItemRepository;
+	ItemMasterRepository ItemMasterRepository;
 
-	public List<Item> findAll() {
-		return ItemRepository.findAll();
+	public List<ItemMaster> findAll() {
+		return ItemMasterRepository.findAll();
 	}
 
 }

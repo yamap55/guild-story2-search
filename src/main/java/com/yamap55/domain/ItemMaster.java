@@ -11,11 +11,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_super_rare")
+@Table(name = "m_item")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SuperRare {
+public class ItemMaster {
 
 	@Id
 	@GeneratedValue
@@ -24,9 +24,6 @@ public class SuperRare {
 	@Column(nullable = false)
 	private String name;
 
-	@Column
-	private String ability;
-	
 	@Column
 	private String pronunciation;
 }

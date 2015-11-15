@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yamap55.domain.Item;
-import com.yamap55.service.ItemService;
+import com.yamap55.domain.ItemMaster;
+import com.yamap55.service.ItemMasterService;
 
 @RestController
 @RequestMapping("api/item")
 public class ItemRestController {
 
 	@Autowired
-	ItemService ItemService;
+	ItemMasterService ItemService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	List<Item> getCustomers() {
-		List<Item> items = ItemService.findAll();
-		return items;
+	List<ItemMaster> getCustomers() {
+		List<ItemMaster> itemMasters = ItemService.findAll();
+		return itemMasters;
 	}
 }
