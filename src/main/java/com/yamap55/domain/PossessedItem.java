@@ -33,7 +33,7 @@ public class PossessedItem {
 	@Column
 	private String memo;
 
-	private Item item;
+//	private ItemMaster itemMaster;
 
-	private SuperRare superRare;
+//	private SuperRareMaster superRareMaster;
 }

@@ -8,19 +8,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.yamap55.domain.SuperRare;
-import com.yamap55.service.SuperRareService;
+import com.yamap55.domain.SuperRareMaster;
+import com.yamap55.service.SuperRareMasterService;
 
 @Controller
 @RequestMapping("")
-public class SuperRareController {
+public class SuperRareMasterController {
 
 	@Autowired
-	SuperRareService superRareService;
+	SuperRareMasterService superRareMasterService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	String list(Model model) {
-		List<SuperRare> superRares = superRareService.findAll();
+		List<SuperRareMaster> superRares = superRareMasterService.findAll();
 		model.addAttribute("superRares", superRares);
 		return "list";
 	}

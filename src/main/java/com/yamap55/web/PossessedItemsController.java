@@ -12,7 +12,7 @@ import com.yamap55.domain.PossessedItem;
 import com.yamap55.service.PossessedItemsService;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("aa")
 public class PossessedItemsController {
 
 	@Autowired
