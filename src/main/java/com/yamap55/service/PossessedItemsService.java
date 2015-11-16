@@ -14,10 +14,13 @@ import com.yamap55.repository.PossessedItemsRepository;
 public class PossessedItemsService {
 
 	@Autowired
-	PossessedItemsRepository PossessedItemsRepository;
+	PossessedItemsRepository possessedItemsRepository;
 
 	public List<PossessedItem> findAll() {
-		return PossessedItemsRepository.findAll();
+		return possessedItemsRepository.findAll();
 	}
 
+	public PossessedItem create(PossessedItem possessedItem) {
+		return possessedItemsRepository.save(possessedItem);
+	}
 }
