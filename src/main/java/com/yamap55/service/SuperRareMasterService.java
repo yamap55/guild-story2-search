@@ -20,4 +20,7 @@ public class SuperRareMasterService {
 		return superRareMasterRepository.findAll();
 	}
 
+	public SuperRareMaster findToId(int id) {
+		return superRareMasterRepository.getOne(id);
+	}
 }

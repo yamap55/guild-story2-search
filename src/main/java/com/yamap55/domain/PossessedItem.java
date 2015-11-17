@@ -28,12 +28,9 @@ public class PossessedItem {
 	@GeneratedValue
 	private int id;
 
-//	@Column(name = "super_rare_id")
-//	private int superRareId;
-
 	@Column
-    @Enumerated(EnumType.ORDINAL)
-    private Shogo shogo;
+	@Enumerated(EnumType.ORDINAL)
+	private Shogo shogo;
 
 	@Column
 	private String memo;
@@ -45,6 +42,6 @@ public class PossessedItem {
 	private SuperRareMaster superRareMaster;
 
 	public String getAllName() {
-		return superRareMaster.getName() + shogo.getShogoName() +  itemMaster.getName();
+		return superRareMaster.getName() + shogo.getShogoName() + itemMaster.getName();
 	}
 }
