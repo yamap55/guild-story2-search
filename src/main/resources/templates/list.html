@@ -13,6 +13,20 @@
 	th:href="@{/css/common.css}" rel="stylesheet" />
 </head>
 <body>
+	<script type="text/javascript">
+	function func(){
+		var j = JSON.stringify({"shogo":3, "itemMaster":{"id":40}, "superRareMaster":{"id":44}});
+		$.ajax({
+			  type: 'POST',
+			  url: "http://localhost:8080/api/possessedItem",
+			  data: j,
+			  success: function(d,i){console.log(d + " " + i)},
+			  contentType: 'application/json'
+			});
+	}
+	</script>
+	<input type="button" value="CLICK ME" onClick="func()"/>
+	<hr />
 	<div>
 		<table class="table table-striped table-bordered table-condensed">
 			<tr>
