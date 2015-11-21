@@ -13,20 +13,6 @@
 	th:href="@{/css/common.css}" rel="stylesheet" />
 </head>
 <body>
-	<script type="text/javascript">
-	function func(){
-		var j = JSON.stringify({"shogo":3, "itemMaster":{"id":40}, "superRareMaster":{"id":44}});
-		$.ajax({
-			  type: 'POST',
-			  url: "http://localhost:8080/api/possessedItem",
-			  data: j,
-			  success: function(d,i){console.log(d + " " + i)},
-			  contentType: 'application/json'
-			});
-	}
-	</script>
-	<input type="button" value="CLICK ME" onClick="func()"/>
-	<hr />
 	<div>
 		<table class="table table-striped table-bordered table-condensed">
 			<tr>
@@ -35,38 +21,30 @@
 				<th>称号</th>
 				<th>装備名</th>
 				<th>メモ</th>
-				<th> - </th>
+				<th>-</th>
 			</tr>
 			<tr>
 				<td>1</td>
+				<td><input type="text" id="super_rare_name" autocomplete="off"
+					size="10" class="suggest" />
+					<div id="super_rare_suggest" class="suggest_area"></div></td>
+				<td><select id="shogo">
+						<option value="0">最低な</option>
+						<option value="1">臭い</option>
+						<option value="2" selected="selected">（称号なし）</option>
+						<option value="3">名工の</option>
+						<option value="4">魔性の</option>
+						<option value="5">宿った</option>
+						<option value="6">伝説の</option>
+						<option value="7">恐ろしい</option>
+						<option value="8">壊れた</option>
+				</select></td>
+				<td><input type="text" id="item_name" autocomplete="off"
+					size="10" class="suggest" />
+					<div id="item_suggest" class="suggest_area"></div></td>
+				<td><input type="text" id="memo" /></td>
 				<td>
-					<input type="text" id="super_rare_name" autocomplete="off" size="10"
-					class="suggest"/>
-					<div id="super_rare_suggest" class="suggest_area"></div>
-				</td>
-				<td>
-					<select id="shogo">
-						<option value="1">最低な</option>
-						<option value="2">臭い</option>
-						<option value="3" selected="selected">（称号なし）</option>
-						<option value="4">名工の</option>
-						<option value="5">魔性の</option>
-						<option value="6">宿った</option>
-						<option value="7">伝説の</option>
-						<option value="8">恐ろしい</option>
-						<option value="9">壊れた</option>
-					</select>
-				</td>
-				<td>
-					<input type="text" id="item_name" autocomplete="off" size="10"
-					class="suggest" />
-					<div id="item_suggest" class="suggest_area"></div>
-				</td>
-				<td>
-					<input type="text" id="memo" />
-				</td>
-				<td>
-					<button type="button" class="btn btn-primary">更新</button>
+					<button type="button" class="btn btn-primary" id="add">追加</button>
 				</td>
 			</tr>
 		</table>
@@ -113,26 +91,63 @@
 	<script type="text/javascript">
 		function startSuggest() {
 			$.getJSON("api/super_rare", null, function(data, status) {
-				new Suggest.Local("super_rare_name", "super_rare_suggest", data, {
-					dispMax : 10,
-					interval : 1000,
-					prefix : true, // 前方一致
-					serchKeyFunction: function(obj){return obj.pronunciation},
-					suggestFunction: function(obj){return obj.name},
-				});
+				new Suggest.Local("super_rare_name", "super_rare_suggest",
+						data, {
+							dispMax : 10,
+							interval : 1000,
+							prefix : true, // 前方一致
+							serchKeyFunction : function(obj) {
+								return obj.pronunciation
+							},
+							suggestFunction : function(obj) {
+								return obj.name
+							},
+						});
 			});
 			$.getJSON("api/item", null, function(data, status) {
 				new Suggest.Local("item_name", "item_suggest", data, {
 					dispMax : 10,
 					interval : 1000,
 					prefix : true, // 前方一致
-					serchKeyFunction: function(obj){return obj.pronunciation},
-					suggestFunction: function(obj){return obj.name},
+					serchKeyFunction : function(obj) {
+						return obj.pronunciation
+					},
+					suggestFunction : function(obj) {
+						return obj.name
+					},
 				});
 			});
 		}
 		window.addEventListener ? window.addEventListener('load', startSuggest,
 				false) : window.attachEvent('onload', startSuggest);
+		$($("#add").on(
+				"click",
+				function func() {
+					var j = JSON.stringify({
+						"shogo" : $("#shogo").val(),
+						"itemMaster" : {
+							"name" : $("#item_name").val()
+						},
+						"superRareMaster" : {
+							"name" : $("#super_rare_name").val()
+						}
+					});
+					console.log(j);
+					$.ajax({
+						type : 'POST',
+						url : "http://localhost:8080/api/possessedItem",
+						data : j,
+						success : function(data, dataType) {
+							console.log(data + " ☆ " + dataType)
+						},
+						error : function(XMLHttpRequest, textStatus,
+								errorThrown) {
+							console.log(XMLHttpRequest + " ☆ " + textStatus
+									+ " ☆ " + errorThrown)
+						},
+						contentType : 'application/json'
+					});
+				}));
 	</script>
 </body>
 </html>

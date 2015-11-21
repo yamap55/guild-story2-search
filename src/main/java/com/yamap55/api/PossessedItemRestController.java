@@ -31,9 +31,22 @@ public class PossessedItemRestController {
 	// 新規追加
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	PossessedItem create(@RequestBody PossessedItem possessedItem) {
-		ItemMaster itemMaster = itemMasterService.findToId(possessedItem.getItemMaster().getId());
-		SuperRareMaster superRareMaster = superRareMasterService.findToId(possessedItem.getSuperRareMaster().getId());
+	PossessedItem create(@RequestBody PossessedItem possessedItem) throws Exception {
+		ItemMaster itemMaster = itemMasterService.findByName(possessedItem.getItemMaster().getName());
+
+		if (itemMaster == null) {
+			throw new Exception("アイテム名が変だよ。");
+		}
+
+		SuperRareMaster superRareMaster = superRareMasterService.findByName(possessedItem.getSuperRareMaster().getName());
+
+		if (superRareMaster == null) {
+			throw new Exception("超レア名が変だよ。");
+		}
+
+
+//		ItemMaster itemMaster = itemMasterService.findById(possessedItem.getItemMaster().getId());
+//		SuperRareMaster superRareMaster = superRareMasterService.findById(possessedItem.getSuperRareMaster().getId());
 		possessedItem.setItemMaster(itemMaster);
 		possessedItem.setSuperRareMaster(superRareMaster);
 		PossessedItem item = possessedItemsService.create(possessedItem);
