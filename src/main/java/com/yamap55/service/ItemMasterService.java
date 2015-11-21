@@ -20,7 +20,11 @@ public class ItemMasterService {
 		return ItemMasterRepository.findAll();
 	}
 
-	public ItemMaster findToId(int id) {
+	public ItemMaster findById(int id) {
 		return ItemMasterRepository.getOne(id);
+	}
+
+	public ItemMaster findByName(String name) {
+		return ItemMasterRepository.findByName(name);
 	}
 }
