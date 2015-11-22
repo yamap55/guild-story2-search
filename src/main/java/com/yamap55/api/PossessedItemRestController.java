@@ -44,9 +44,6 @@ public class PossessedItemRestController {
 			throw new Exception("超レア名が変だよ。");
 		}
 
-
-//		ItemMaster itemMaster = itemMasterService.findById(possessedItem.getItemMaster().getId());
-//		SuperRareMaster superRareMaster = superRareMasterService.findById(possessedItem.getSuperRareMaster().getId());
 		possessedItem.setItemMaster(itemMaster);
 		possessedItem.setSuperRareMaster(superRareMaster);
 		PossessedItem item = possessedItemsService.create(possessedItem);
