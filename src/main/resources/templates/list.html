@@ -13,41 +13,54 @@
 	th:href="@{/css/common.css}" rel="stylesheet" />
 </head>
 <body>
-	<div>
-		<table class="table table-striped table-bordered table-condensed">
-			<tr>
-				<th>No.</th>
-				<th>超レア称号</th>
-				<th>称号</th>
-				<th>装備名</th>
-				<th>メモ</th>
-				<th>-</th>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td><input type="text" id="super_rare_name" autocomplete="off"
-					size="10" class="suggest" />
-					<div id="super_rare_suggest" class="suggest_area"></div></td>
-				<td><select id="shogo">
-						<option value="0">最低な</option>
-						<option value="1">臭い</option>
-						<option value="2" selected="selected">（称号なし）</option>
-						<option value="3">名工の</option>
-						<option value="4">魔性の</option>
-						<option value="5">宿った</option>
-						<option value="6">伝説の</option>
-						<option value="7">恐ろしい</option>
-						<option value="8">壊れた</option>
-				</select></td>
-				<td><input type="text" id="item_name" autocomplete="off"
-					size="10" class="suggest" />
-					<div id="item_suggest" class="suggest_area"></div></td>
-				<td><input type="text" id="memo" /></td>
-				<td>
+
+	<button class="btn btn-primary" data-toggle="modal"
+		data-target="#modal-registration">超レア追加</button>
+	<div class="modal" id="modal-registration" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modal-label">超レア追加</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="super_rare_name">超レア称号</label> <input type="text"
+							id="super_rare_name" autocomplete="off" size="10"
+							class="suggest form-control" placeholder="超レア称号" />
+						<div id="super_rare_suggest" class="suggest_area"></div>
+					</div>
+					<div class="form-group">
+						<label for="shogo">称号</label> <select id="shogo"
+							class="form-control">
+							<option value="0">最低な</option>
+							<option value="1">臭い</option>
+							<option value="2" selected="selected">（称号なし）</option>
+							<option value="3">名工の</option>
+							<option value="4">魔性の</option>
+							<option value="5">宿った</option>
+							<option value="6">伝説の</option>
+							<option value="7">恐ろしい</option>
+							<option value="8">壊れた</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="item_name">アイテム名</label> <input type="text"
+							id="item_name" autocomplete="off" size="10" class="suggest form-control" placeholder="アイテム名"/>
+						<div id="item_suggest" class="suggest_area"></div>
+					</div>
+					<div class="form-group">
+						<label for="memo">メモ</label> <input type="text" id="memo"  class="form-control"/>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" id="close">閉じる</button>
 					<button type="button" class="btn btn-primary" id="add">追加</button>
-				</td>
-			</tr>
-		</table>
+				</div>
+			</div>
+		</div>
 	</div>
 	<hr />
 	<div>
@@ -138,7 +151,8 @@
 						url : "http://localhost:8080/api/possessedItem",
 						data : j,
 						success : function(data, dataType) {
-							console.log(data + " ☆ " + dataType)
+							console.log(data + " ☆ " + dataType);
+							$("#close").click();
 						},
 						error : function(XMLHttpRequest, textStatus,
 								errorThrown) {
