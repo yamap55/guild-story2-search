@@ -1,6 +1,6 @@
 # guild-story2-memo
-iPhoneƒAƒvƒŠu[–`Œ¯ÒƒMƒ‹ƒh•¨Œê2](https://itunes.apple.com/jp/app/mao-xian-zhegirudo-wu-yu2/id598299996)v‚ÌŠƒAƒCƒeƒ€‚ğƒƒ‚‚·‚éB
+iPhoneã‚¢ãƒ—ãƒªã€Œ[å†’é™ºè€…ã‚®ãƒ«ãƒ‰ç‰©èª2](https://itunes.apple.com/jp/app/mao-xian-zhegirudo-wu-yu2/id598299996)ã€ã®æ‰€æŒã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒ¡ãƒ¢ã™ã‚‹ã€‚
 
-## Ql
-- [Œö®](http://guildstory.netgamers.jp/guild2/)
-- [–`Œ¯ÒƒMƒ‹ƒh•¨Œê2 wiki](http://wikiwiki.jp/guildmono2/)
+## å‚è€ƒ
+- [å…¬å¼](http://guildstory.netgamers.jp/guild2/)
+- [å†’é™ºè€…ã‚®ãƒ«ãƒ‰ç‰©èª2 wiki](http://wikiwiki.jp/guildmono2/)
