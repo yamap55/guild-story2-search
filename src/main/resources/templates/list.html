@@ -15,7 +15,7 @@
 <body>
 
 	<button class="btn btn-primary" data-toggle="modal"
-		data-target="#modal-registration">超レア追加</button>
+		data-target="#modal-registration" onClick="addModal()">超レア追加</button>
 	<div class="modal" id="modal-registration" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -26,6 +26,9 @@
 					<h4 class="modal-title" id="modal-label">超レア追加</h4>
 				</div>
 				<div class="modal-body">
+					<div class="form-group">
+						<label for="id">ID</label><input id="id" class="form-control disabled" disabled="disabled"></input>
+					</div>
 					<div class="form-group">
 						<label for="super_rare_name">超レア称号</label> <input type="text"
 							id="super_rare_name" autocomplete="off" size="10"
@@ -57,7 +60,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal" id="close">閉じる</button>
-					<button type="button" class="btn btn-primary" id="add">追加</button>
+					<button type="button" class="btn btn-primary" id="moadl_btn">追加</button>
 				</div>
 			</div>
 		</div>
@@ -72,7 +75,9 @@
 			</tr>
 			<tr th:each="possessedItem : ${possessedItems}">
 				<td th:text="${possessedItem.id}">100</td>
-				<td th:text="${possessedItem.allName}">なまえ</td>
+				<td>
+					<a href="#" data-toggle="modal" data-target="#modal-registration" onClick="updateModal($(this).closest('tr'))"><span th:id="'superrare_name_'  + ${possessedItem.id}" id="superrare" th:text="${possessedItem.superRareMaster.name}"></span><span th:id="'shogo_'  + ${possessedItem.id}" id="shogo" th:text="${possessedItem.shogoName}"></span><span th:id="'item_name_'  + ${possessedItem.id}" id="item_name" th:text="${possessedItem.itemMaster.name}"></span></a>
+				</td>
 				<td th:text="${possessedItem.memo}">メモ</td>
 			</tr>
 		</table>
@@ -102,6 +107,30 @@
 	<script type="text/javascript" src="../../../../static/js/suggest.js"
 		th:src="@{/js/suggest.js}"></script>
 	<script type="text/javascript">
+		// セレクト要素の中から、指定されたテキストと等しいOptionのValueを返す
+		function selectByOptionId(select, text) {
+			return $(select).find("option").filter(function(i,d){return $(d).text() == text}).val();
+		}
+		function addModal() {
+			$("#moadl_btn").text("追加");
+			$("#modal-label").text("超レア追加");
+			$("#id").val("");
+			$("#super_rare_name").val("");
+			$("#shogo").val("2");
+			$("#item_name").val("");
+			$("#memo").val("");
+		}
+		function updateModal(element){
+			$("#moadl_btn").text("更新");
+			$("#modal-label").text("アイテム情報更新");
+			var td = $(element).find("td");
+			var nameSpan = td.eq(1).find("span");
+			$("#id").val(td.eq(0).text());
+			$("#super_rare_name").val(nameSpan.eq(0).text());
+			$("#shogo").val(selectByOptionId("#shogo", nameSpan.eq(1).text()));
+			$("#item_name").val(nameSpan.eq(2).text());
+			$("#memo").val(td.eq(2).text());
+		}
 		function startSuggest() {
 			$.getJSON("api/super_rare", null, function(data, status) {
 				new Suggest.Local("super_rare_name", "super_rare_suggest",
@@ -133,10 +162,11 @@
 		}
 		window.addEventListener ? window.addEventListener('load', startSuggest,
 				false) : window.attachEvent('onload', startSuggest);
-		$($("#add").on(
+		$($("#moadl_btn").on(
 				"click",
 				function func() {
 					var j = JSON.stringify({
+						"id" : $("#id").val(),
 						"shogo" : $("#shogo").val(),
 						"itemMaster" : {
 							"name" : $("#item_name").val()
@@ -146,7 +176,6 @@
 						},
 						"memo" : $("#memo").val()
 					});
-					console.log(j);
 					$.ajax({
 						type : 'POST',
 						url : "api/possessedItem",

@@ -41,6 +41,10 @@ public class PossessedItem {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private SuperRareMaster superRareMaster;
 
+	public String getShogoName() {
+		return shogo.getShogoName();
+	}
+
 	public String getAllName() {
 		return superRareMaster.getName() + shogo.getShogoName() + itemMaster.getName();
 	}
