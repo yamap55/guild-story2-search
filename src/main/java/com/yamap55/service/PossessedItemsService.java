@@ -20,7 +20,7 @@ public class PossessedItemsService {
 		return possessedItemsRepository.findAll();
 	}
 
-	public PossessedItem create(PossessedItem possessedItem) {
+	public PossessedItem save(PossessedItem possessedItem) {
 		return possessedItemsRepository.save(possessedItem);
 	}
 }

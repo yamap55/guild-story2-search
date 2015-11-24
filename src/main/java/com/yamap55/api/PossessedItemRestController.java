@@ -46,7 +46,7 @@ public class PossessedItemRestController {
 
 		possessedItem.setItemMaster(itemMaster);
 		possessedItem.setSuperRareMaster(superRareMaster);
-		PossessedItem item = possessedItemsService.create(possessedItem);
+		PossessedItem item = possessedItemsService.save(possessedItem);
 		return item;
 	}
 }
