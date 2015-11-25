@@ -2,6 +2,7 @@ package com.yamap55.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,22 +32,17 @@ public class PossessedItemRestController {
 	// 新規追加
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	PossessedItem create(@RequestBody PossessedItem possessedItem) throws Exception {
+	ResponseEntity<PossessedItem> create(@RequestBody PossessedItem possessedItem) {
 		ItemMaster itemMaster = itemMasterService.findByName(possessedItem.getItemMaster().getName());
-
-		if (itemMaster == null) {
-			throw new Exception("アイテム名が変だよ。");
-		}
-
 		SuperRareMaster superRareMaster = superRareMasterService.findByName(possessedItem.getSuperRareMaster().getName());
 
-		if (superRareMaster == null) {
-			throw new Exception("超レア名が変だよ。");
+		if (itemMaster == null || superRareMaster == null) {
+			return new ResponseEntity<PossessedItem>(possessedItem, HttpStatus.BAD_REQUEST);
 		}
 
 		possessedItem.setItemMaster(itemMaster);
 		possessedItem.setSuperRareMaster(superRareMaster);
-		PossessedItem item = possessedItemsService.save(possessedItem);
-		return item;
+		possessedItem = possessedItemsService.save(possessedItem);
+		return new ResponseEntity<PossessedItem>(possessedItem, HttpStatus.CREATED);
 	}
 }

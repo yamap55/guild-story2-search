@@ -26,6 +26,7 @@
 					<h4 class="modal-title" id="modal-label">超レア追加</h4>
 				</div>
 				<div class="modal-body">
+					<div id="server_error_area" class="error"></div>
 					<div class="form-group">
 						<label for="id">ID</label><input id="id" class="form-control disabled" disabled="disabled"></input>
 					</div>
@@ -186,8 +187,7 @@
 						},
 						error : function(XMLHttpRequest, textStatus,
 								errorThrown) {
-							console.log(XMLHttpRequest + " ☆ " + textStatus
-									+ " ☆ " + errorThrown)
+							$("#server_error_area").text("error.");
 						},
 						contentType : 'application/json'
 					});
