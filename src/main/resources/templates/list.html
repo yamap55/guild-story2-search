@@ -13,7 +13,6 @@
 	th:href="@{/css/common.css}" rel="stylesheet" />
 </head>
 <body>
-
 	<button class="btn btn-primary" data-toggle="modal"
 		data-target="#modal-registration" onClick="addModal()">超レア追加</button>
 	<div class="modal" id="modal-registration" tabindex="-1">
@@ -35,6 +34,7 @@
 							id="super_rare_name" autocomplete="off" size="10"
 							class="suggest form-control" placeholder="超レア称号" />
 						<div id="super_rare_suggest" class="suggest_area"></div>
+						<div id="super_rare_error" class="text-danger"></div>
 					</div>
 					<div class="form-group">
 						<label for="shogo">称号</label> <select id="shogo"
@@ -54,6 +54,7 @@
 						<label for="item_name">アイテム名</label> <input type="text"
 							id="item_name" autocomplete="off" size="10" class="suggest form-control" placeholder="アイテム名"/>
 						<div id="item_suggest" class="suggest_area"></div>
+						<div id="item_error" class="text-danger"></div>
 					</div>
 					<div class="form-group">
 						<label for="memo">メモ</label> <input type="text" id="memo"  class="form-control"/>
@@ -108,6 +109,28 @@
 	<script type="text/javascript" src="../../../../static/js/suggest.js"
 		th:src="@{/js/suggest.js}"></script>
 	<script type="text/javascript">
+		$(function(){
+			// アイテム名の存在チェック
+			$("#item_name").on("change blur",function(){
+				$.ajax({
+					type : 'POST',
+					url : "api/item/existsByName",
+					data : $("#item_name").val(),
+					success : function(data, dataType) {
+						$("#item_name").closest("div").addClass(data ? "has-success" : "has-error");
+						$("#item_name").closest("div").removeClass(data ? "has-error" : "has-success");
+						$("#item_error").text(data ? "" : "存在しないアイテムです。");
+					},
+					error : function(XMLHttpRequest, textStatus,
+							errorThrown) {
+						console.log(XMLHttpRequest + " ☆ " + textStatus + " ☆ " + errorThrown);
+					},
+					contentType : 'application/json'
+				});
+			})
+		});
+
+
 		// セレクト要素の中から、指定されたテキストと等しいOptionのValueを返す
 		function selectByOptionId(select, text) {
 			return $(select).find("option").filter(function(i,d){return $(d).text() == text}).val();
