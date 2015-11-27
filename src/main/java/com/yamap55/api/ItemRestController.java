@@ -26,9 +26,7 @@ public class ItemRestController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "existsByName")
 	boolean existsByName(@RequestBody String name) {
-		System.out.println(name);
 		ItemMaster master = ItemService.findByName(name);
-		System.out.println(master);
 		return master != null;
 	}
 }
