@@ -130,6 +130,26 @@
 			})
 		});
 
+		$(function(){
+			// スーパーレアの存在チェック
+			$("#super_rare_name").on("change blur",function(){
+				$.ajax({
+					type : 'POST',
+					url : "api/super_rare/existsByName",
+					data : $("#super_rare_name").val(),
+					success : function(data, dataType) {
+						$("#super_rare_name").closest("div").addClass(data ? "has-success" : "has-error");
+						$("#super_rare_name").closest("div").removeClass(data ? "has-error" : "has-success");
+						$("#super_rare_error").text(data ? "" : "超レア称号が不正です。");
+					},
+					error : function(XMLHttpRequest, textStatus,
+							errorThrown) {
+						console.log(XMLHttpRequest + " ☆ " + textStatus + " ☆ " + errorThrown);
+					},
+					contentType : 'application/json'
+				});
+			})
+		});
 
 		// セレクト要素の中から、指定されたテキストと等しいOptionのValueを返す
 		function selectByOptionId(select, text) {
