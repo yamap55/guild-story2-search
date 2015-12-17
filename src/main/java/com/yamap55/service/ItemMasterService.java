@@ -14,17 +14,17 @@ import com.yamap55.repository.ItemMasterRepository;
 public class ItemMasterService {
 
 	@Autowired
-	ItemMasterRepository ItemMasterRepository;
+	ItemMasterRepository itemMasterRepository;
 
 	public List<ItemMaster> findAll() {
-		return ItemMasterRepository.findAll();
+		return itemMasterRepository.findAll();
 	}
 
 	public ItemMaster findById(int id) {
-		return ItemMasterRepository.getOne(id);
+		return itemMasterRepository.getOne(id);
 	}
 
 	public ItemMaster findByName(String name) {
-		return ItemMasterRepository.findByName(name);
+		return itemMasterRepository.findByName(name);
 	}
 }
