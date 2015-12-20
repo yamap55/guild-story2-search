@@ -90,12 +90,18 @@
 			<tr>
 				<th>ID</th>
 				<th>名称</th>
-				<th>効果</th>
+				<th>種別</th>
+				<th>アイテム</th>
 			</tr>
-			<tr th:each="superRare : ${superRares}">
-				<td th:text="${superRare.id}">100</td>
-				<td th:text="${superRare.name}">なまえ</td>
-				<td th:text="${superRare.ability}">効果とか</td>
+			<tr th:each="skill : ${skills}">
+				<td th:text="${skill.id}">100</td>
+				<td th:text="${skill.name}">なまえ</td>
+				<td th:text="${skill.skillType}">効果とか</td>
+				<td>
+					<span th:each="itemMaster : ${skill.itemMasters}">
+						<span th:text="${itemMaster.name}">item</span>,
+					</span>
+				</td>
 			</tr>
 		</table>
 	</div>

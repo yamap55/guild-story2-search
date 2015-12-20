@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.yamap55.domain.PossessedItem;
-import com.yamap55.domain.SuperRareMaster;
+import com.yamap55.domain.SkillMaster;
 import com.yamap55.service.ItemMasterService;
 import com.yamap55.service.PossessedItemsService;
+import com.yamap55.service.SkillMasterService;
 import com.yamap55.service.SuperRareMasterService;
 
 @Controller
@@ -27,13 +28,17 @@ public class PossessedItemsController {
 	@Autowired
 	ItemMasterService itemMasterService;
 
+	@Autowired
+	SkillMasterService skillMasterService;
+
 	@RequestMapping(method = RequestMethod.GET)
 	String list(Model model) {
 		List<PossessedItem> possessedItems = possessedItemsService.findAll();
 		model.addAttribute("possessedItems", possessedItems);
 
-		List<SuperRareMaster> superRares = superRareMasterService.findAll();
-		model.addAttribute("superRares", superRares);
+		List<SkillMaster> skills = skillMasterService.findAll();
+		model.addAttribute("skills", skills);
+
 		return "list";
 	}
 }
