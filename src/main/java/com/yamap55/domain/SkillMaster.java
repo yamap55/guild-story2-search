@@ -1,6 +1,7 @@
 package com.yamap55.domain;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,15 +36,19 @@ public class SkillMaster {
 	@Column(name = "skill_type", nullable = false)
 	private String skillType;
 
-	  @ManyToMany
-	  @JoinTable(
-	    name = "item_skill",
-	    joinColumns = {
-	      @JoinColumn(name = "skill_master_id", referencedColumnName = "id")
-	    },
+	@ManyToMany
+	@JoinTable(
+		name = "item_skill",
+		joinColumns = {
+			@JoinColumn(name = "skill_master_id", referencedColumnName = "id")
+		},
 	    inverseJoinColumns = {
-	      @JoinColumn(name = "item_master_id", referencedColumnName = "id")
-	    }
-	  )
-	  private List<ItemMaster> itemMasters;
+	    	@JoinColumn(name = "item_master_id", referencedColumnName = "id")
+		}
+	)
+	private List<ItemMaster> itemMasters;
+
+	public List<String> getItemNames() {
+		return itemMasters.stream().map(emp -> emp.getName()).collect(Collectors.toList());
+	}
 }

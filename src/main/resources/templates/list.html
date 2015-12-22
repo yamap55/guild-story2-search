@@ -97,11 +97,7 @@
 				<td th:text="${skill.id}">100</td>
 				<td th:text="${skill.name}">なまえ</td>
 				<td th:text="${skill.skillType}">効果とか</td>
-				<td>
-					<span th:each="itemMaster : ${skill.itemMasters}">
-						<span th:text="${itemMaster.name}">item</span>,
-					</span>
-				</td>
+				<td th:text="${#strings.listJoin(skill.itemNames,',')}">item</td>
 			</tr>
 		</table>
 	</div>
