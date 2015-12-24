@@ -16,6 +16,10 @@ public class SkillMasterService {
 	@Autowired
 	SkillMasterRepository skillMasterRepository;
 
+	public List<SkillMaster> findByNameStartingWith(String skillName) {
+		return skillMasterRepository.findByNameStartingWith(skillName);
+	}
+
 	public SkillMaster findByName(String name) {
 		return skillMasterRepository.findBySkillName(name);
 	}

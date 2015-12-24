@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class ListForm {
-	private String firstName;
-	private String lastName;
 	private String searchKey;
-	private String searchType;
+	private String searchType = "2";
 }

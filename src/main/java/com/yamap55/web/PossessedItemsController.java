@@ -44,9 +44,6 @@ public class PossessedItemsController {
 		List<PossessedItem> possessedItems = possessedItemsService.findAll();
 		model.addAttribute("possessedItems", possessedItems);
 
-		List<SkillMaster> skills = skillMasterService.findAll();
-		model.addAttribute("skills", skills);
-
 		return "list";
 	}
 
@@ -55,9 +52,9 @@ public class PossessedItemsController {
 		if (result.hasErrors()) {
 			return list(model);
 		}
-//		Customer customer = new Customer();
-//		BeanUtils.copyProperties(form, customer);
-//		customerService.create(customer);
-		return "redirect:/";
+		List<SkillMaster> skills = skillMasterService.findByNameStartingWith(form.getSearchKey());
+		model.addAttribute("skills", skills);
+
+		return "list";
 	}
 }
