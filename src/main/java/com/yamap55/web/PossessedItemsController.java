@@ -48,7 +48,7 @@ public class PossessedItemsController {
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	String create(@Validated ListForm form, BindingResult result, Model model) {
+	String search(@Validated ListForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return list(model);
 		}
