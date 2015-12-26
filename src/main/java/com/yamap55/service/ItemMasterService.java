@@ -27,4 +27,8 @@ public class ItemMasterService {
 	public ItemMaster findByName(String name) {
 		return itemMasterRepository.findByName(name);
 	}
+
+	public List<ItemMaster> findByNameContains(String name) {
+		return itemMasterRepository.findByNameContains(name);
+	}
 }

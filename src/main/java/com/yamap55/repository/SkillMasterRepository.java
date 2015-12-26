@@ -13,5 +13,5 @@ public interface SkillMasterRepository extends JpaRepository<SkillMaster, Intege
 	@Query("select x from SkillMaster x where x.name = :skillName")
 	SkillMaster findBySkillName(@Param("skillName")  String skillName);
 
-	List<SkillMaster> findByNameStartingWith(String skillName);
+	List<SkillMaster> findByNameContains(String skillName);
 }

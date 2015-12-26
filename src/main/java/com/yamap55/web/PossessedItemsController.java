@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.yamap55.domain.ItemMaster;
 import com.yamap55.domain.PossessedItem;
 import com.yamap55.domain.SkillMaster;
 import com.yamap55.service.ItemMasterService;
@@ -49,12 +50,19 @@ public class PossessedItemsController {
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	String search(@Validated ListForm form, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			return list(model);
-		}
-		List<SkillMaster> skills = skillMasterService.findByNameStartingWith(form.getSearchKey());
-		model.addAttribute("skills", skills);
 
+		if (form.getSearchType() == null) {
+			return "list";
+		} else switch (form.getSearchType()) {
+		case "1":
+			List<ItemMaster> items = itemMasterService.findByNameContains(form.getSearchKey());
+			model.addAttribute("items", items);
+			break;
+		case "2":
+			List<SkillMaster> skills = skillMasterService.findByNameContains(form.getSearchKey());
+			model.addAttribute("skills", skills);
+			break;
+		}
 		return "list";
 	}
 }

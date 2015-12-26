@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -36,7 +37,7 @@ public class SkillMaster {
 	@Column(name = "skill_type", nullable = false)
 	private String skillType;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "item_skill",
 		joinColumns = {

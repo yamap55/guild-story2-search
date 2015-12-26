@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
-<title>超レア一覧</title>
+<title>冒険者ギルド物語検索</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}" />
@@ -13,78 +13,6 @@
 	th:href="@{/css/common.css}" rel="stylesheet" />
 </head>
 <body>
-	<button class="btn btn-primary" data-toggle="modal"
-		data-target="#modal-registration" onClick="addModal()">超レア追加</button>
-	<div class="modal" id="modal-registration" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="modal-label">超レア追加</h4>
-				</div>
-				<div class="modal-body">
-					<div id="server_error_area" class="error"></div>
-					<div class="form-group">
-						<label for="id">ID</label><input id="id" class="form-control disabled" disabled="disabled"></input>
-					</div>
-					<div class="form-group">
-						<label for="super_rare_name">超レア称号</label> <input type="text"
-							id="super_rare_name" autocomplete="off" size="10"
-							class="suggest form-control" placeholder="超レア称号" />
-						<div id="super_rare_suggest" class="suggest_area"></div>
-						<div id="super_rare_error" class="text-danger"></div>
-					</div>
-					<div class="form-group">
-						<label for="shogo">称号</label> <select id="shogo"
-							class="form-control">
-							<option value="0">最低な</option>
-							<option value="1">臭い</option>
-							<option value="2" selected="selected">（称号なし）</option>
-							<option value="3">名工の</option>
-							<option value="4">魔性の</option>
-							<option value="5">宿った</option>
-							<option value="6">伝説の</option>
-							<option value="7">恐ろしい</option>
-							<option value="8">壊れた</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="item_name">アイテム名</label> <input type="text"
-							id="item_name" autocomplete="off" size="10" class="suggest form-control" placeholder="アイテム名"/>
-						<div id="item_suggest" class="suggest_area"></div>
-						<div id="item_error" class="text-danger"></div>
-					</div>
-					<div class="form-group">
-						<label for="memo">メモ</label> <input type="text" id="memo"  class="form-control"/>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal" id="close">閉じる</button>
-					<button type="button" class="btn btn-primary" id="moadl_btn">追加</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<hr />
-	<div>
-		<table class="table table-striped table-bordered table-condensed">
-			<tr>
-				<th>ID</th>
-				<th>名称</th>
-				<th>memo</th>
-			</tr>
-			<tr th:each="possessedItem : ${possessedItems}">
-				<td th:text="${possessedItem.id}">100</td>
-				<td>
-					<a href="#" data-toggle="modal" data-target="#modal-registration" onClick="updateModal($(this).closest('tr'))"><span th:id="'superrare_name_'  + ${possessedItem.id}" id="superrare" th:text="${possessedItem.superRareMaster.name}"></span><span th:id="'shogo_'  + ${possessedItem.id}" id="shogo" th:text="${possessedItem.shogoName}"></span><span th:id="'item_name_'  + ${possessedItem.id}" id="item_name" th:text="${possessedItem.itemMaster.name}"></span></a>
-				</td>
-				<td th:text="${possessedItem.memo}">メモ</td>
-			</tr>
-		</table>
-	</div>
-	<hr />
 	<form th:action="@{/search}" th:object="${listForm}" method="post">
 		<div class="input-group">
 			<span class="input-group-addon">
@@ -105,7 +33,20 @@
 	</form>
 	<hr />
 	<div>
-		<table class="table table-striped table-bordered table-condensed">
+		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(items)}">
+			<tr>
+				<th class="col-xs-1">ID</th>
+				<th class="col-xs-3">名称</th>
+				<th>スキル</th>
+			</tr>
+			<tr th:each="item : ${items}">
+				<td th:text="${item.id}">100</td>
+				<td th:text="${item.name}">なまえ</td>
+				<td th:text="${#strings.listJoin(item.skillNames,',')}">skill</td>
+			</tr>
+		</table>
+
+		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(skills)}">
 			<tr>
 				<th class="col-xs-1">ID</th>
 				<th class="col-xs-3">名称</th>
@@ -127,135 +68,5 @@
 	<script
 		src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"
 		th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
-	<script type="text/javascript" src="../../../../static/js/suggest.js"
-		th:src="@{/js/suggest.js}"></script>
-	<script type="text/javascript">
-		$(function(){
-			// アイテム名の存在チェック
-			$("#item_name").on("change blur",function(){
-				$.ajax({
-					type : 'POST',
-					url : "api/item/existsByName",
-					data : $("#item_name").val(),
-					success : function(data, dataType) {
-						$("#item_name").closest("div").addClass(data ? "has-success" : "has-error");
-						$("#item_name").closest("div").removeClass(data ? "has-error" : "has-success");
-						$("#item_error").text(data ? "" : "存在しないアイテムです。");
-					},
-					error : function(XMLHttpRequest, textStatus,
-							errorThrown) {
-						console.log(XMLHttpRequest + " ☆ " + textStatus + " ☆ " + errorThrown);
-					},
-					contentType : 'application/json'
-				});
-			})
-		});
-
-		$(function(){
-			// スーパーレアの存在チェック
-			$("#super_rare_name").on("change blur",function(){
-				$.ajax({
-					type : 'POST',
-					url : "api/super_rare/existsByName",
-					data : $("#super_rare_name").val(),
-					success : function(data, dataType) {
-						$("#super_rare_name").closest("div").addClass(data ? "has-success" : "has-error");
-						$("#super_rare_name").closest("div").removeClass(data ? "has-error" : "has-success");
-						$("#super_rare_error").text(data ? "" : "超レア称号が不正です。");
-					},
-					error : function(XMLHttpRequest, textStatus,
-							errorThrown) {
-						console.log(XMLHttpRequest + " ☆ " + textStatus + " ☆ " + errorThrown);
-					},
-					contentType : 'application/json'
-				});
-			})
-		});
-
-		// セレクト要素の中から、指定されたテキストと等しいOptionのValueを返す
-		function selectByOptionId(select, text) {
-			return $(select).find("option").filter(function(i,d){return $(d).text() == text}).val();
-		}
-		function addModal() {
-			$("#moadl_btn").text("追加");
-			$("#modal-label").text("超レア追加");
-			$("#id").val("");
-			$("#super_rare_name").val("");
-			$("#shogo").val("2");
-			$("#item_name").val("");
-			$("#memo").val("");
-		}
-		function updateModal(element){
-			$("#moadl_btn").text("更新");
-			$("#modal-label").text("アイテム情報更新");
-			var td = $(element).find("td");
-			var nameSpan = td.eq(1).find("span");
-			$("#id").val(td.eq(0).text());
-			$("#super_rare_name").val(nameSpan.eq(0).text());
-			$("#shogo").val(selectByOptionId("#shogo", nameSpan.eq(1).text()));
-			$("#item_name").val(nameSpan.eq(2).text());
-			$("#memo").val(td.eq(2).text());
-		}
-		function startSuggest() {
-			$.getJSON("api/super_rare", null, function(data, status) {
-				new Suggest.Local("super_rare_name", "super_rare_suggest",
-						data, {
-							dispMax : 10,
-							interval : 1000,
-							prefix : true, // 前方一致
-							serchKeyFunction : function(obj) {
-								return obj.pronunciation
-							},
-							suggestFunction : function(obj) {
-								return obj.name
-							},
-						});
-			});
-			$.getJSON("api/item", null, function(data, status) {
-				new Suggest.Local("item_name", "item_suggest", data, {
-					dispMax : 10,
-					interval : 1000,
-					prefix : true, // 前方一致
-					serchKeyFunction : function(obj) {
-						return obj.pronunciation
-					},
-					suggestFunction : function(obj) {
-						return obj.name
-					},
-				});
-			});
-		}
-		window.addEventListener ? window.addEventListener('load', startSuggest,
-				false) : window.attachEvent('onload', startSuggest);
-		$($("#moadl_btn").on(
-				"click",
-				function func() {
-					var j = JSON.stringify({
-						"id" : $("#id").val(),
-						"shogo" : $("#shogo").val(),
-						"itemMaster" : {
-							"name" : $("#item_name").val()
-						},
-						"superRareMaster" : {
-							"name" : $("#super_rare_name").val()
-						},
-						"memo" : $("#memo").val()
-					});
-					$.ajax({
-						type : 'POST',
-						url : "api/possessedItem",
-						data : j,
-						success : function(data, dataType) {
-							console.log(data + " ☆ " + dataType);
-							$("#close").click();
-						},
-						error : function(XMLHttpRequest, textStatus,
-								errorThrown) {
-							$("#server_error_area").text("error.");
-						},
-						contentType : 'application/json'
-					});
-				}));
-	</script>
 </body>
 </html>
