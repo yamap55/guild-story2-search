@@ -52,4 +52,20 @@ public class SkillMaster {
 	public List<String> getItemNames() {
 		return itemMasters.stream().map(emp -> emp.getName()).collect(Collectors.toList());
 	}
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+		name = "super_rare_skill",
+		joinColumns = {
+			@JoinColumn(name = "skill_master_id", referencedColumnName = "id")
+		},
+	    inverseJoinColumns = {
+	    	@JoinColumn(name = "super_rare_id", referencedColumnName = "id")
+		}
+	)
+	private List<SuperRareMaster> superRareMasters;
+
+	public List<String> getSuperRareNames() {
+		return superRareMasters.stream().map(emp -> emp.getName()).collect(Collectors.toList());
+	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.yamap55.domain.ItemMaster;
 import com.yamap55.domain.PossessedItem;
 import com.yamap55.domain.SkillMaster;
+import com.yamap55.domain.SuperRareMaster;
 import com.yamap55.service.ItemMasterService;
 import com.yamap55.service.PossessedItemsService;
 import com.yamap55.service.SkillMasterService;
@@ -56,9 +57,13 @@ public class PossessedItemsController {
 		} else switch (form.getSearchType()) {
 		case "1":
 			List<ItemMaster> items = itemMasterService.findByNameContains(form.getSearchKey());
-			model.addAttribute("items", items);
+			model.addAttribute("infos", items);
 			break;
 		case "2":
+			List<SuperRareMaster> SuperRares = superRareMasterService.findByNameContains(form.getSearchKey());
+			model.addAttribute("infos", SuperRares);
+			break;
+		case "3":
 			List<SkillMaster> skills = skillMasterService.findByNameContains(form.getSearchKey());
 			model.addAttribute("skills", skills);
 			break;

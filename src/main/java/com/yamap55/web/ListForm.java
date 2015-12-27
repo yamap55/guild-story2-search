@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class ListForm {
 	private String searchKey;
-	private String searchType = "2";
+	private String searchType = "3";
 }

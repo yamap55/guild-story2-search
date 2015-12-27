@@ -27,4 +27,7 @@ public class SuperRareMasterService {
 	public SuperRareMaster findByName(String name) {
 		return superRareMasterRepository.findByName(name);
 	}
+	public List<SuperRareMaster> findByNameContains(String name) {
+		return superRareMasterRepository.findByNameContains(name);
+	}
 }

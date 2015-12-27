@@ -20,7 +20,10 @@
 					<input type="radio" name="searchType" value="1" th:field="*{searchType}" />item
 				</label>
 				<label class="radio-inline">
-					<input type="radio" name="searchType" value="2" th:field="*{searchType}"/>skill
+					<input type="radio" name="searchType" value="2" th:field="*{searchType}" />超レア
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="searchType" value="3" th:field="*{searchType}"/>skill
 				</label>
 			</span>
 			<input type="text" class="form-control" placeholder="検索" id="searchKey" th:field="*{searchKey}"/>
@@ -33,16 +36,16 @@
 	</form>
 	<hr />
 	<div>
-		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(items)}">
+		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(infos)}">
 			<tr>
 				<th class="col-xs-1">ID</th>
 				<th class="col-xs-3">名称</th>
 				<th>スキル</th>
 			</tr>
-			<tr th:each="item : ${items}">
-				<td th:text="${item.id}">100</td>
-				<td th:text="${item.name}">なまえ</td>
-				<td th:text="${#strings.listJoin(item.skillNames,',')}">skill</td>
+			<tr th:each="info : ${infos}">
+				<td th:text="${info.id}">100</td>
+				<td th:text="${info.name}">なまえ</td>
+				<td th:text="${#strings.listJoin(info.skillNames,',')}">skill</td>
 			</tr>
 		</table>
 
@@ -51,12 +54,14 @@
 				<th class="col-xs-1">ID</th>
 				<th class="col-xs-3">名称</th>
 				<th class="col-xs-2">種別</th>
+				<th class="col-xs-3">超レア</th>
 				<th>アイテム</th>
 			</tr>
 			<tr th:each="skill : ${skills}">
 				<td th:text="${skill.id}">100</td>
 				<td th:text="${skill.name}">なまえ</td>
 				<td th:text="${skill.skillType}">効果とか</td>
+				<td th:text="${#strings.listJoin(skill.superRareNames,',')}">超レア</td>
 				<td th:text="${#strings.listJoin(skill.itemNames,',')}">item</td>
 			</tr>
 		</table>
