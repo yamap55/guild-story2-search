@@ -13,6 +13,13 @@
 	th:href="@{/css/common.css}" rel="stylesheet" />
 </head>
 <body>
+	<h1>冒険者ギルド物語2 検索</h1>
+	<ul>
+		<li>iPhoneアプリ「<a href="https://itunes.apple.com/jp/app/mao-xian-zhegirudo-wu-yu2/id598299996" target="_blank">冒険者ギルド物語2</a>」のアイテム、スキル、超レアを検索します。</li>
+		<li>それぞれの情報は<a href="http://wikiwiki.jp/guildmono2/" target="_blank">冒険者ギルド物語2 wiki</a>を元にしており、現在β中のV6の情報は含んでおりません。</li>
+		<li>データを欲しい方は<a href="https://github.com/yamap55/guild-story2-memo/tree/master/master">こちら</a>。</li>
+		<li>誤りや要望は<a href="https://github.com/yamap55/guild-story2-memo/issues" target="_blank">issue</a>や<a href="https://twitter.com/yamap_55" target="_blank">twitter</a>にお願いします。</li>
+	</ul>
 	<form th:action="@{/search}" th:object="${listForm}" method="post">
 		<div class="input-group col-md-6">
 			<span class="input-group-addon">
@@ -51,16 +58,12 @@
 
 		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(skills)}">
 			<tr>
-				<th class="col-xs-1">ID</th>
 				<th class="col-xs-3">名称</th>
-				<th class="col-xs-2">種別</th>
 				<th class="col-xs-3">超レア</th>
 				<th>アイテム</th>
 			</tr>
 			<tr th:each="skill : ${skills}">
-				<td th:text="${skill.id}">100</td>
 				<td th:text="${skill.name}">なまえ</td>
-				<td th:text="${skill.skillType}">効果とか</td>
 				<td th:text="${#strings.listJoin(skill.superRareNames,',')}">超レア</td>
 				<td th:text="${#strings.listJoin(skill.itemNames,',')}">item</td>
 			</tr>
