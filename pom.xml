@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.yamap55</groupId>
-	<artifactId>guild-story2-memo</artifactId>
+	<artifactId>guild-story2-search</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
