@@ -60,8 +60,8 @@ public class ListSearchController {
 			model.addAttribute("infos", items);
 			break;
 		case "2":
-			List<SuperRareMaster> SuperRares = superRareMasterService.findByNameContains(form.getSearchKey());
-			model.addAttribute("infos", SuperRares);
+			List<SuperRareMaster> superRares = superRareMasterService.findByNameContains(form.getSearchKey());
+			model.addAttribute("infos", superRares);
 			break;
 		case "3":
 			List<SkillMaster> skills = skillMasterService.findByNameContains(form.getSearchKey());
