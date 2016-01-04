@@ -1,6 +1,5 @@
 package com.yamap55.web;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,18 +56,17 @@ public class ListSearchController {
 		} else switch (form.getSearchType()) {
 		case "1":
 			List<ItemMaster> items = itemMasterService.findByNameContains(form.getSearchKey());
-			model.addAttribute("infos", items);
+			form.setItems(items);
 			break;
 		case "2":
 			List<SuperRareMaster> superRares = superRareMasterService.findByNameContains(form.getSearchKey());
-			model.addAttribute("infos", superRares);
+			form.setSuperRares(superRares);
 			break;
 		case "3":
 			List<SkillMaster> skills = skillMasterService.findByNameContains(form.getSearchKey());
-			model.addAttribute("skills", skills);
+			form.setSkills(skills);
 			break;
 		default :
-			model.addAttribute("skills", Collections.EMPTY_LIST);
 			break;
 		}
 		return "list";

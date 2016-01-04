@@ -20,6 +20,61 @@
 		<li>データを欲しい方は<a href="https://github.com/yamap55/guild-story2-memo/tree/master/master">こちら</a>。</li>
 		<li>誤りや要望は<a href="https://github.com/yamap55/guild-story2-memo/issues" target="_blank">issue</a>や<a href="https://twitter.com/yamap_55" target="_blank">twitter</a>にお願いします。</li>
 	</ul>
+	<div class="modal" id="modal-registration" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modal-label">アイテム詳細</h4>
+				</div>
+				<div class="modal-body">
+					<dl class="dl-horizontal" style="margin-bottom:0px;">
+						<dt>ID</dt>
+						<dd id="itemidValue">1</dd>
+						<dt>種別</dt>
+						<dd id="itemtype"><span id="itemtypeValue">細剣</span> : <span id="itemtypeInfoValue">ノーマル</span></dd>
+						<dt>名称</dt>
+						<dd id="itemnameValue">レイピア</dd>
+						<dt>読みがな</dt>
+						<dd id="itempronunciationValue">れいぴあ</dd>
+						<dt>ドロップ</dt>
+						<dd id="itemdropLocationValue">魔性の山道</dd>
+						<dt>効果</dt>
+						<dd id="itemskillsValue">[+60]命中精度アップ,[+6]追加ダメージ,[武器]近距離攻撃</dd>
+						<dt>価格</dt>
+						<dd id="itempriceValue">100GP</dd>
+						<dt>攻撃力</dt>
+						<dd id="itemattackValue">3</dd>
+						<dt>命中精度</dt>
+						<dd id="itemdexterityValue">16</dd>
+						<dt>防御力</dt>
+						<dd id="itemdefenseValue">-</dd>
+						<dt>回避能力</dt>
+						<dd id="itemevasionValue">-</dd>
+						<dt>魔法攻撃力</dt>
+						<dd id="itemmagicAttackValue">-</dd>
+						<dt>魔法防御力</dt>
+						<dd id="itemmagicDefenseValue">-</dd>
+						<dt>必殺率</dt>
+						<dd id="itemcriticalValue">4</dd>
+						<dt>攻撃回数</dt>
+						<dd id="itemattackCountValue">0.4</dd>
+						<dt>最大HP</dt>
+						<dd id="itemmaxHpValue">-</dd>
+						<dt>罠解除能力</dt>
+						<dd id="itemtrapReleaseValue">-</dd>
+						<dt>魔法回復量</dt>
+						<dd id="itemmagicRecoveryValue">-</dd>
+					</dl>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" id="close">閉じる</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<form th:action="@{/search}" th:object="${listForm}" method="get">
 		<div class="input-group col-md-6">
 			<span class="input-group-addon">
@@ -43,29 +98,45 @@
 	</form>
 	<hr />
 	<div>
-		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(infos)}">
+		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(listForm.items)}">
 			<tr>
 				<th class="col-xs-1">ID</th>
 				<th class="col-xs-3">名称</th>
 				<th>スキル</th>
 			</tr>
-			<tr th:each="info : ${infos}">
+			<tr th:each="info : ${listForm.items}">
+				<td th:text="${info.id}">100</td>
+				<td th:text="${info.name}">なまえ</td>
+				<td th:text="${#strings.listJoin(info.skillNames,',')}">skill</td>
+			</tr>
+		</table>
+		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(listForm.superRares)}">
+			<tr>
+				<th class="col-xs-1">ID</th>
+				<th class="col-xs-3">名称</th>
+				<th>スキル</th>
+			</tr>
+			<tr th:each="info : ${listForm.superRares}">
 				<td th:text="${info.id}">100</td>
 				<td th:text="${info.name}">なまえ</td>
 				<td th:text="${#strings.listJoin(info.skillNames,',')}">skill</td>
 			</tr>
 		</table>
 
-		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(skills)}">
+		<table class="table table-striped table-bordered table-condensed" th:if="${not #lists.isEmpty(listForm.skills)}">
 			<tr>
 				<th class="col-xs-3">名称</th>
 				<th class="col-xs-3">超レア</th>
 				<th>アイテム</th>
 			</tr>
-			<tr th:each="skill : ${skills}">
+			<tr th:each="skill : ${listForm.skills}">
 				<td th:text="${skill.name}">なまえ</td>
 				<td th:text="${#strings.listJoin(skill.superRareNames,',')}">超レア</td>
-				<td th:text="${#strings.listJoin(skill.itemNames,',')}">item</td>
+				<td>
+					<span th:each="item : ${skill.itemMasters}">
+						<a href="#" onClick="" data-toggle="modal" data-target="#modal-registration" th:text="${item.name}" th:attr="data-target-id=${item.id}" data-target-id="1" onclick="getItemInfo(this)">test</a>,
+					</span>
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -84,6 +155,30 @@
 
 		ga('create', 'UA-71885231-1', 'auto');
 		ga('send', 'pageview');
+
+		function getItemInfo(elm) {
+			$.ajax({
+				type : 'GET',
+				url : "api/item/findOne",
+				data : {id:$(elm).attr("data-target-id")},
+				success : function(data, dataType) {
+					Object.keys(data).forEach(function(key) {
+						var value;
+						if (key==="skills") {
+							value = this[key].map(function(a,b){return a.name}).join(",");
+						} else {
+							value = this[key];
+						}
+						$("#item" + key + "Value").text(value);
+					}, data);
+//					console.log(data);
+				},
+				error : function(XMLHttpRequest, textStatus,
+						errorThrown) {
+					console.log(XMLHttpRequest + " ☆ " + textStatus + " ☆ " + errorThrown);
+				}
+			});
+		};
 	</script>
 </body>
 </html>
