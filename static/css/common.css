@@ -25,3 +25,7 @@ div.over {
 	font-size: 160%;
 	color: red;
 }
+.loading {
+	margin: 40px auto 40px auto;;
+	width: 32px;
+}
