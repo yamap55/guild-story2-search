@@ -29,3 +29,13 @@ div.over {
 	margin: 40px auto 40px auto;;
 	width: 32px;
 }
+
+#loading-modal {
+    width: 100%;
+    height: 100%;
+    background-color:red;
+
+    .modal-body {
+        max-height: 100px;
+    }
+}
