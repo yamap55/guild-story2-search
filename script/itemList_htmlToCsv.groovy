@@ -1,51 +1,57 @@
+@Grab('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1')
 @Grab('org.jsoup:jsoup:1.8.3')
 @Grab('com.xlson.groovycsv:groovycsv:1.1')
+
+import groovyx.net.http.HTTPBuilder
 import org.jsoup.Jsoup
+import org.apache.http.entity.ContentType
 import com.xlson.groovycsv.CsvParser
 
-def oldItemMasterPath = $/C:\work\workspace\guild-story2-search\guild-story2-search\master\item.csv/$
-
-//def str = $/http://wikiwiki.jp/$
-//println  new  URL(str).getText("EUC-JP") // 403
-def wikiHtml = $/C:\work\20160131\item.html/$
-
-def outputFilePath = $/C:\work\20160131\item.csv/$
+def outputFilePath = "/Users/yamap_55/work/${new Date().format('yyyyMMdd')}/item_${new Date().format('yyyyMMddHHmmss')}.csv"
 def outputFile = new File(outputFilePath)
 
 if (outputFile.exists()) {
   outputFile.delete()
 }
 
-// ‹ŒƒAƒCƒeƒ€ƒ}ƒXƒ^[‚©‚çƒAƒCƒeƒ€î•ñ‚ğæ“¾‚·‚éB
+def oldItemMasterUrl = $/https://raw.githubusercontent.com/yamap55/guild-story2-search/master/master/item.csv/$
+// æ—§ã‚¢ã‚¤ãƒ†ãƒ ãƒã‚¹ã‚¿ãƒ¼ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’å–å¾—ã™ã‚‹ã€‚
 def getOldItemInfo = {
-  def csv = new File(oldItemMasterPath).text
-  def data = new CsvParser().parse(csv).collect{["–¼Ì": it["–¼Ì"],"í•Ê":it["í•Ê"], "í•ÊÚ×":it["í•ÊÚ×"], "“Ç‚İ‚ª‚È":it["“Ç‚İ‚ª‚È"]]}
+  def csv = new URL(oldItemMasterUrl).text
+  def data = new CsvParser().parse(csv).collect{["åç§°": it["åç§°"],"ç¨®åˆ¥":it["ç¨®åˆ¥"], "ç¨®åˆ¥è©³ç´°":it["ç¨®åˆ¥è©³ç´°"], "èª­ã¿ãŒãª":it["èª­ã¿ãŒãª"]]}
   return {name->
-    name ? data.find {it["–¼Ì"] == name} : null
+    name ? data.find {it["åç§°"] == name} : null
   }
 }()
 
-// List‚ÉcollectWithIndex‚ğ’Ç‰ÁB
+def url = "http://wikiwiki.jp"
+def http = new HTTPBuilder(url)
+
+
+
+// Listã«collectWithIndexã‚’è¿½åŠ ã€‚
 List.metaClass.collectWithIndex = {body->
     def i=0
     delegate.collect { body(it, i++) }
 }
 
 
-// Œø‰Ê‚©‚çŠeƒXƒe[ƒ^ƒX‚ğ”²‚«o‚·‚½‚ß‚Ì³‹K•\Œ»
-def statusRegex = [/UŒ‚—Í(-?[.0-9]+)$/,/–½’†¸“x(-?[.0-9]+)$/,/–hŒä—Í(-?[.0-9]+)$/,/‰ñ”ğ”\—Í(-?[.0-9]+)$/,/–‚–@UŒ‚—Í(-?[.0-9]+)$/,/–‚–@–hŒä—Í(-?[.0-9]+)$/,/•KE—¦(-?[.0-9]+%)$/,/UŒ‚‰ñ”(-?[.0-9]+)$/,/Å‘åHP(-?[.0-9]+)$/,/ã©‰ğœ”\—Í(-?[.0-9]+)$/,/–‚–@‰ñ•œ—Ê(-?[.0-9]+)$/]
+// åŠ¹æœã‹ã‚‰å„ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æŠœãå‡ºã™ãŸã‚ã®æ­£è¦è¡¨ç¾
+def statusRegex = [/æ”»æ’ƒåŠ›(-?[.0-9]+)$/,/å‘½ä¸­ç²¾åº¦(-?[.0-9]+)$/,/é˜²å¾¡åŠ›(-?[.0-9]+)$/,/å›é¿èƒ½åŠ›(-?[.0-9]+)$/,/é­”æ³•æ”»æ’ƒåŠ›(-?[.0-9]+)$/,/é­”æ³•é˜²å¾¡åŠ›(-?[.0-9]+)$/,/å¿…æ®ºç‡(-?[.0-9]+%)$/,/æ”»æ’ƒå›æ•°(-?[.0-9]+)$/,/æœ€å¤§HP(-?[.0-9]+)$/,/ç½ è§£é™¤èƒ½åŠ›(-?[.0-9]+)$/,/é­”æ³•å›å¾©é‡(-?[.0-9]+)$/]
 
-// ÅI“I‚ÈHEAD
-// ID,í•Ê,í•ÊÚ×,No.,–¼Ì,“Ç‚İ‚ª‚È,ƒhƒƒbƒv,Œø‰Ê,‰¿Ši,
-// UŒ‚—Í,–½’†¸“x,–hŒä—Í,‰ñ”ğ”\—Í,–‚–@UŒ‚—Í,–‚–@–hŒä—Í,•KE—¦,UŒ‚‰ñ”,Å‘åHP,ã©‰ğœ”\—Í,–‚–@‰ñ•œ—Ê
-def masterHead = ["ID", "í•Ê", "í•ÊÚ×", "NO.", "–¼Ì", "“Ç‚İ‚ª‚È", "ƒhƒƒbƒv", "Œø‰Ê", "‰¿Ši", "UŒ‚—Í", "–½’†¸“x", "–hŒä—Í", "‰ñ”ğ”\—Í", "–‚–@UŒ‚—Í", "–‚–@–hŒä—Í", "•KE—¦", "UŒ‚‰ñ”", "Å‘åHP", "ã©‰ğœ”\—Í", "–‚–@‰ñ•œ—Ê"]
-def statusIndex = masterHead.indexOf("UŒ‚—Í")
+// æœ€çµ‚çš„ãªHEAD
+// ID,ç¨®åˆ¥,ç¨®åˆ¥è©³ç´°,No.,åç§°,èª­ã¿ãŒãª,ãƒ‰ãƒ­ãƒƒãƒ—,åŠ¹æœ,ä¾¡æ ¼,
+// æ”»æ’ƒåŠ›,å‘½ä¸­ç²¾åº¦,é˜²å¾¡åŠ›,å›é¿èƒ½åŠ›,é­”æ³•æ”»æ’ƒåŠ›,é­”æ³•é˜²å¾¡åŠ›,å¿…æ®ºç‡,æ”»æ’ƒå›æ•°,æœ€å¤§HP,ç½ è§£é™¤èƒ½åŠ›,é­”æ³•å›å¾©é‡
+def masterHead = ["ID", "ç¨®åˆ¥", "ç¨®åˆ¥è©³ç´°", "NO.", "åç§°", "èª­ã¿ãŒãª", "ãƒ‰ãƒ­ãƒƒãƒ—", "åŠ¹æœ", "ä¾¡æ ¼", "æ”»æ’ƒåŠ›", "å‘½ä¸­ç²¾åº¦", "é˜²å¾¡åŠ›", "å›é¿èƒ½åŠ›", "é­”æ³•æ”»æ’ƒåŠ›", "é­”æ³•é˜²å¾¡åŠ›", "å¿…æ®ºç‡", "æ”»æ’ƒå›æ•°", "æœ€å¤§HP", "ç½ è§£é™¤èƒ½åŠ›", "é­”æ³•å›å¾©é‡"]
+def statusIndex = masterHead.indexOf("æ”»æ’ƒåŠ›")
+
+def newItems = []
 def createRecode = {head, data ->
   def result = masterHead.collect{""}
   head.eachWithIndex {d, i ->
-    if (d == "Œø‰Ê") {
+    if (d == "åŠ¹æœ") {
       def a = []
-      data[i].split("@").each {str ->
+      data[i].split("ã€€").each {str ->
         def flag = false
         statusRegex.eachWithIndex { regex, j ->
           def m = str =~ regex
@@ -58,45 +64,54 @@ def createRecode = {head, data ->
           a << str
         }
       }
-      result[masterHead.indexOf(d)] = a ? a.join("@") : ""
+      result[masterHead.indexOf(d)] = a ? a.join("ã€€") : ""
     } else {
-      // ƒe[ƒuƒ‹‚ªŒ‹‡‚³‚ê‚Ä‚¢‚Änull‚ğ•Ô‚·‚±‚Æ‚ª‚ ‚é‚½‚ßƒf[ƒ^‚ª‚È‚¢ê‡‚É‚Í‹ó•¶š‚É•ÏŠ·B
+      // ãƒ†ãƒ¼ãƒ–ãƒ«ãŒçµåˆã•ã‚Œã¦ã„ã¦nullã‚’è¿”ã™ã“ã¨ãŒã‚ã‚‹ãŸã‚ãƒ‡ãƒ¼ã‚¿ãŒãªã„å ´åˆã«ã¯ç©ºæ–‡å­—ã«å¤‰æ›ã€‚
       result[masterHead.indexOf(d)] = data[i] ?:""
     }
   }
-  // w’èî•ñ‚ÍŒÃ‚¢ItemInfo‚©‚çæ“¾
-  def name = result[masterHead.indexOf("–¼Ì")]
+  // æŒ‡å®šæƒ…å ±ã¯å¤ã„ItemInfoã‹ã‚‰å–å¾—
+  def name = result[masterHead.indexOf("åç§°")]
   def oldInfo = getOldItemInfo(name)
   if (oldInfo) {
     def f = {n ->
       result[masterHead.indexOf(n)] = oldInfo[n]
     }
-    ["í•Ê", "í•ÊÚ×", "“Ç‚İ‚ª‚È"].each{f(it)}
+    ["ç¨®åˆ¥", "ç¨®åˆ¥è©³ç´°", "èª­ã¿ãŒãª"].each{f(it)}
+  } else if (name) {
+    newItems << name
   }
   result
 }
 
-def doc = Jsoup.parse(new File(wikiHtml), "EUC-JP")
 def l = []
-doc.select(".style_table").each {
-  def head = it.select("thead th").collect{it.text()}
-  def body = it.select("tbody tr").each {
-    def data = it.select("td").collectWithIndex {v, i ->
-      def d = v.text()
-      if(head[i] == "‰¿Ši" || head[i] == "‰¿’l") {
-        head[i] = "‰¿Ši" // ‰¿Ši‚É“ˆê
-        d = d.contains(",")?"\"${d}\"":d
-      } else if (head[i] == "Œø‰Ê") {
-        // Œø‰Ê‚Ì’†‚É‰üs‚ğŠÜ‚ñ‚Å‚¢‚é‚±‚Æ‚ª‚ ‚é‚½‚ßB
-        d = v.html().replaceAll('<br class="spacer">', "@")
-      } else if (head[i] == "NO.") { 
-        d = d as int
-      } else if (head[i] == "”õl"){
-        head[i] = "ƒhƒƒbƒv"
+http.get(
+  [path : "/guildmono2/",
+  queryString:URLEncoder.encode("ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§", "EUC-JP"),
+  contentType:"text/plain"]) { resp, reader ->
+  def doc = Jsoup.parse(reader.text)
+  doc.select(".style_table").each {
+    // ç¨®åˆ¥ãªã©ã‚‚ã¨ã‚Œã‚‹ãŒã€çµå±€æ—§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¾ãªã„ã¨å–å¾—ã§ããªã„æƒ…å ±ãŒã‚ã‚‹ã®ã§ãã¡ã‚‰ã‚’ä½¿ç”¨ã™ã‚‹ã€‚
+    // it.parent().previousElementSibling().text()
+    def head = it.select("thead th").collect{it.text()}
+    def body = it.select("tbody tr").each {
+      def data = it.select("td").collectWithIndex {v, i ->
+        def d = v.text()
+        if(head[i] == "ä¾¡æ ¼" || head[i] == "ä¾¡å€¤") {
+          head[i] = "ä¾¡æ ¼" // ä¾¡æ ¼ã«çµ±ä¸€
+          d = d.contains(",")?"\"${d}\"":d
+        } else if (head[i] == "åŠ¹æœ") {
+          // åŠ¹æœã®ä¸­ã«æ”¹è¡Œã‚’å«ã‚“ã§ã„ã‚‹ã“ã¨ãŒã‚ã‚‹ãŸã‚ã€‚
+          d = v.html().replaceAll('<br class="spacer">', "ã€€")
+        } else if (head[i] == "NO.") {
+          d = d as int
+        } else if (head[i] == "å‚™è€ƒ"){
+          head[i] = "ãƒ‰ãƒ­ãƒƒãƒ—"
+        }
+        d
       }
-      d
+      l << createRecode(head, data)
     }
-    l << createRecode(head, data)
   }
 }
 outputFile << masterHead.join(",")
@@ -106,3 +121,6 @@ l.eachWithIndex {d, i ->
   outputFile << d.join(",")
   outputFile << "\r\n"
 }
+
+println("æ–°ã‚¢ã‚¤ãƒ†ãƒ ".center(15, "*"))
+println newItems.join("\n")
